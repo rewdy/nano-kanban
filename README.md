@@ -9,6 +9,8 @@ nano-kanban is **just task orchestration** — a shared blackboard where multipl
 - **One JSON file** (`./tasks.json`) as state. Per-cwd, per-session.
 - **Zero config.** One command, done.
 
+![nano-kanban dashboard](./dashboard.png)
+
 ## Install
 
 From GitHub:
