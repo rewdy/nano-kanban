@@ -1,0 +1,37 @@
+{
+  "name": "nano-kanban",
+  "version": "0.1.0",
+  "description": "Shared task board for AI agents. Bundles the MCP server config and skill instructions for coordinating work through the board.",
+  "author": {
+    "name": "Andrew Meyer"
+  },
+  "homepage": "https://github.com/rewdy/nano-kanban",
+  "repository": "https://github.com/rewdy/nano-kanban",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "kanban",
+    "agents",
+    "coordination"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "nano-kanban",
+    "shortDescription": "Shared task board for AI agents",
+    "longDescription": "Coordinate multi-agent work through a shared kanban board backed by a local MCP server and live dashboard.",
+    "developerName": "Andrew Meyer",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write",
+      "Interactive"
+    ],
+    "websiteURL": "https://github.com/rewdy/nano-kanban",
+    "defaultPrompt": [
+      "Set up a nano-kanban board for these tasks.",
+      "Work through the tasks on my nano-kanban board.",
+      "Shut down the nano-kanban board."
+    ]
+  }
+}

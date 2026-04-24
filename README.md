@@ -37,11 +37,23 @@ Or use the slash commands directly: `/kanban-setup`, `/kanban-status`, `/kanban-
 
 Requires Node ≥ 20.
 
+## Quick start with Codex
+
+This repo now includes a Codex plugin manifest at [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json) and a matching MCP config at [`.mcp.json`](./.mcp.json).
+
+Use those files to load the plugin in Codex, then talk to it the same way you would in Claude:
+
+- **"Set up a task board with these items: …"** — Codex starts the daemon, creates tasks, and points you at the dashboard.
+- **"Work through the tasks."** — Codex claims, works, comments, and completes tasks one at a time.
+- **"Shut down the board."** — Codex stops the daemon cleanly. `tasks.json` stays as a record.
+
+The bundled skill is still [`skills/nano-kanban/SKILL.md`](./skills/nano-kanban/SKILL.md), so the task-board workflow stays the same across both clients.
+
 ---
 
 ## Manual install (without the plugin)
 
-If you want to use nano-kanban without the Claude Code plugin — from another agent, from a script, or just to see the dashboard — install the CLI and start the daemon yourself.
+If you want to use nano-kanban without the Claude Code or Codex plugin — from another agent, from a script, or just to see the dashboard — install the CLI and start the daemon yourself.
 
 ### Install the CLI
 
@@ -101,7 +113,9 @@ Or add this to `~/.claude.json` directly:
 }
 ```
 
-Agents should pass a stable `agent_id` string (e.g. `"claude-main"`) on claim/complete/release so the board knows who owns what.
+If you are wiring up another MCP-capable client, point it at `http://127.0.0.1:7777/mcp` using the same shape.
+
+Agents should pass a stable `agent_id` string (e.g. `"claude-main"` or `"codex-main"`) on claim/complete/release so the board knows who owns what.
 
 ## MCP tools
 
