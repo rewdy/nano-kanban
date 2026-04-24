@@ -15,6 +15,7 @@ export async function startServer(opts: { port: number; file: string; host?: str
   const store = await Store.load(opts.file);
   const mcp = buildMcpServer(store);
   const dashboardHtml = renderDashboard({ statePath: opts.file });
+  const allowedHostnames = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
 
   const sseClients = new Set<ServerResponse>();
   const unsubscribe = store.subscribe((board) => {
@@ -26,6 +27,11 @@ export async function startServer(opts: { port: number; file: string; host?: str
       const url = new URL(req.url ?? "/", `http://${host}`);
 
       if (url.pathname === "/mcp" && req.method === "POST") {
+        if (!isLocalRequest(req, allowedHostnames)) {
+          res.writeHead(403, { "Content-Type": "text/plain" });
+          res.end("forbidden: nano-kanban only accepts requests from localhost");
+          return;
+        }
         await handleMcp(req, res);
         return;
       }
@@ -63,7 +69,19 @@ export async function startServer(opts: { port: number; file: string; host?: str
     await transport.handleRequest(req, res, body);
   }
 
-  await new Promise<void>((resolve) => httpServer.listen(opts.port, host, resolve));
+  await new Promise<void>((resolve, reject) => {
+    const onError = (err: Error) => {
+      httpServer.removeListener("listening", onListening);
+      reject(err);
+    };
+    const onListening = () => {
+      httpServer.removeListener("error", onError);
+      resolve();
+    };
+    httpServer.once("error", onError);
+    httpServer.once("listening", onListening);
+    httpServer.listen(opts.port, host);
+  });
 
   return {
     http: httpServer,
@@ -107,6 +125,24 @@ function handleSse(req: IncomingMessage, res: ServerResponse, clients: Set<Serve
 
 function writeSseEvent(res: ServerResponse, board: Board): void {
   res.write(`data: ${JSON.stringify(board)}\n\n`);
+}
+
+function isLocalRequest(req: IncomingMessage, allowed: Set<string>): boolean {
+  const hostHeader = req.headers.host;
+  if (!hostHeader) return false;
+  const hostname = hostHeader.split(":")[0]!.toLowerCase();
+  if (!allowed.has(hostname)) return false;
+
+  const origin = req.headers.origin;
+  if (origin) {
+    try {
+      const originHost = new URL(origin).hostname.toLowerCase();
+      if (!allowed.has(originHost)) return false;
+    } catch {
+      return false;
+    }
+  }
+  return true;
 }
 
 async function readJson(req: IncomingMessage): Promise<unknown> {

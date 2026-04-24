@@ -56,7 +56,15 @@ function die(message: string): never {
 
 async function main(): Promise<void> {
   const { args } = parseArgs(process.argv.slice(2));
-  const handle = await startServer({ port: args.port, file: args.file });
+  let handle;
+  try {
+    handle = await startServer({ port: args.port, file: args.file });
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === "EADDRINUSE") {
+      die(`port ${args.port} is already in use — is nano-kanban already running? Try --port <other>.`);
+    }
+    throw err;
+  }
   const base = `http://127.0.0.1:${args.port}`;
 
   console.log(`nano-kanban listening on ${base}`);

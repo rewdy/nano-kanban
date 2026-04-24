@@ -1,23 +1,32 @@
 {
-  "name": "nano-kanban",
+  "name": "@rewdy/nano-kanban",
   "version": "0.1.0",
   "description": "A nano kanban board for AI agent task coordination — MCP + live dashboard.",
   "type": "module",
-  "private": true,
   "bin": {
     "nano-kanban": "./dist/index.js"
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "dev": "tsx src/index.ts serve",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js serve",
-    "typecheck": "tsc --noEmit"
+    "test": "node --import tsx --test src/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "prepare": "tsc -p tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rewdy/nano-kanban.git"
   },
   "author": "Andrew Meyer",
-  "license": "ISC",
+  "license": "MIT",
   "packageManager": "pnpm@10.13.1",
   "engines": {
-    "node": ">=18.17"
+    "node": ">=20"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
