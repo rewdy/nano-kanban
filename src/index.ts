@@ -10,7 +10,9 @@ type CliArgs = {
 function parseArgs(argv: string[]): { command: "serve"; args: CliArgs } {
   const [command = "serve", ...rest] = argv;
   if (command !== "serve") {
-    die(`unknown command: ${command}\n\nusage: nano-kanban serve [--port 7777] [--file ./tasks.json]`);
+    die(
+      `unknown command: ${command}\n\nusage: nano-kanban serve [--port 7777] [--file ./tasks.json]`,
+    );
   }
 
   const args: CliArgs = { port: 7777, file: resolvePath("./tasks.json") };
@@ -61,7 +63,9 @@ async function main(): Promise<void> {
     handle = await startServer({ port: args.port, file: args.file });
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code === "EADDRINUSE") {
-      die(`port ${args.port} is already in use — is nano-kanban already running? Try --port <other>.`);
+      die(
+        `port ${args.port} is already in use — is nano-kanban already running? Try --port <other>.`,
+      );
     }
     throw err;
   }

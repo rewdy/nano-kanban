@@ -2,7 +2,12 @@
   "name": "@rewdy/nano-kanban",
   "version": "0.1.0",
   "description": "A nano kanban board for AI agent task coordination — MCP + live dashboard.",
-  "type": "module",
+  "license": "MIT",
+  "author": "Andrew Meyer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rewdy/nano-kanban.git"
+  },
   "bin": {
     "nano-kanban": "./dist/index.js"
   },
@@ -10,23 +15,16 @@
     "dist",
     "README.md"
   ],
+  "type": "module",
   "scripts": {
     "dev": "tsx src/index.ts serve",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json",
     "start": "node dist/index.js serve",
     "test": "node --import tsx --test src/*.test.ts",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "typecheck": "tsc --noEmit",
-    "prepare": "tsc -p tsconfig.json"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rewdy/nano-kanban.git"
-  },
-  "author": "Andrew Meyer",
-  "license": "MIT",
-  "packageManager": "pnpm@10.13.1",
-  "engines": {
-    "node": ">=20"
+    "prepare": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
@@ -35,7 +33,12 @@
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "oxfmt": "0.46.0",
     "tsx": "^4.0.0",
     "typescript": "^5.4.0"
-  }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.13.1"
 }

@@ -58,18 +58,18 @@ Then in a Claude Code session, the agent can call `list_tasks`, `claim_task`, et
 
 ## MCP tools
 
-| Tool | Purpose | Contention behavior |
-|---|---|---|
-| `list_tasks` | List all tasks, optional status filter | — |
-| `create_task` | Add a new task to Todo | — |
-| `claim_task` | Todo → In Progress, sets assignee | Fails with `already_claimed` / `blocked` / `not_found` / `wrong_status` |
-| `add_comment` | Append a comment (works on any status) | — |
-| `complete_task` | In Progress → Done | Fails with `not_assignee` / `wrong_status` / `not_found` |
-| `release_task` | In Progress → Todo | Fails with `not_assignee` / `wrong_status` / `not_found` |
-| `block_task` | Add blocker task ids | — |
-| `unblock_task` | Remove specific blocker ids | — |
-| `request_human` | Flag the task as needing human input (stays in column, flares on dashboard) | — |
-| `resume_task` | Clear the needs-human flag | — |
+| Tool            | Purpose                                                                     | Contention behavior                                                     |
+| --------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `list_tasks`    | List all tasks, optional status filter                                      | —                                                                       |
+| `create_task`   | Add a new task to Todo                                                      | —                                                                       |
+| `claim_task`    | Todo → In Progress, sets assignee                                           | Fails with `already_claimed` / `blocked` / `not_found` / `wrong_status` |
+| `add_comment`   | Append a comment (works on any status)                                      | —                                                                       |
+| `complete_task` | In Progress → Done                                                          | Fails with `not_assignee` / `wrong_status` / `not_found`                |
+| `release_task`  | In Progress → Todo                                                          | Fails with `not_assignee` / `wrong_status` / `not_found`                |
+| `block_task`    | Add blocker task ids                                                        | —                                                                       |
+| `unblock_task`  | Remove specific blocker ids                                                 | —                                                                       |
+| `request_human` | Flag the task as needing human input (stays in column, flares on dashboard) | —                                                                       |
+| `resume_task`   | Clear the needs-human flag                                                  | —                                                                       |
 
 ### Error shape
 

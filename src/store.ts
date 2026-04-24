@@ -53,7 +53,9 @@ export class Store {
       const raw = await readFile(store.filePath, "utf8");
       const parsed = JSON.parse(raw) as Board;
       if (parsed.version !== 1 || !Array.isArray(parsed.tasks)) {
-        throw new Error(`tasks file at ${store.filePath} is not a valid board (expected version 1).`);
+        throw new Error(
+          `tasks file at ${store.filePath} is not a valid board (expected version 1).`,
+        );
       }
       store.board = parsed;
     } else {
@@ -84,7 +86,11 @@ export class Store {
 
   // ---- mutations ----
 
-  async createTask(input: { title: string; description?: string; blocked_by?: string[] }): Promise<Ok<Task>> {
+  async createTask(input: {
+    title: string;
+    description?: string;
+    blocked_by?: string[];
+  }): Promise<Ok<Task>> {
     return this.mutex.run(async () => {
       const task: Task = {
         id: nanoid(8),
@@ -107,7 +113,10 @@ export class Store {
     return structuredClone(tasks);
   }
 
-  async claimTask(input: { id: string; agent_id: string }): Promise<
+  async claimTask(input: {
+    id: string;
+    agent_id: string;
+  }): Promise<
     Result<
       Task,
       | Err<"not_found">
@@ -133,7 +142,11 @@ export class Store {
     });
   }
 
-  async addComment(input: { id: string; author: string; body: string }): Promise<Result<Task, Err<"not_found">>> {
+  async addComment(input: {
+    id: string;
+    author: string;
+    body: string;
+  }): Promise<Result<Task, Err<"not_found">>> {
     return this.mutex.run(async () => {
       const task = this.findById(input.id);
       if (!task) return { ok: false, code: "not_found" };
@@ -144,17 +157,24 @@ export class Store {
     });
   }
 
-  async completeTask(input: { id: string; agent_id: string }): Promise<
+  async completeTask(input: {
+    id: string;
+    agent_id: string;
+  }): Promise<
     Result<
       Task,
-      Err<"not_found"> | Err<"wrong_status", { status: Status }> | Err<"not_assignee", { assignee: string | null }>
+      | Err<"not_found">
+      | Err<"wrong_status", { status: Status }>
+      | Err<"not_assignee", { assignee: string | null }>
     >
   > {
     return this.mutex.run(async () => {
       const task = this.findById(input.id);
       if (!task) return { ok: false, code: "not_found" };
-      if (task.status !== "in_progress") return { ok: false, code: "wrong_status", status: task.status };
-      if (task.assignee !== input.agent_id) return { ok: false, code: "not_assignee", assignee: task.assignee ?? null };
+      if (task.status !== "in_progress")
+        return { ok: false, code: "wrong_status", status: task.status };
+      if (task.assignee !== input.agent_id)
+        return { ok: false, code: "not_assignee", assignee: task.assignee ?? null };
       task.status = "done";
       task.needs_human = undefined;
       task.updated_at = now();
@@ -163,17 +183,24 @@ export class Store {
     });
   }
 
-  async releaseTask(input: { id: string; agent_id: string }): Promise<
+  async releaseTask(input: {
+    id: string;
+    agent_id: string;
+  }): Promise<
     Result<
       Task,
-      Err<"not_found"> | Err<"wrong_status", { status: Status }> | Err<"not_assignee", { assignee: string | null }>
+      | Err<"not_found">
+      | Err<"wrong_status", { status: Status }>
+      | Err<"not_assignee", { assignee: string | null }>
     >
   > {
     return this.mutex.run(async () => {
       const task = this.findById(input.id);
       if (!task) return { ok: false, code: "not_found" };
-      if (task.status !== "in_progress") return { ok: false, code: "wrong_status", status: task.status };
-      if (task.assignee !== input.agent_id) return { ok: false, code: "not_assignee", assignee: task.assignee ?? null };
+      if (task.status !== "in_progress")
+        return { ok: false, code: "wrong_status", status: task.status };
+      if (task.assignee !== input.agent_id)
+        return { ok: false, code: "not_assignee", assignee: task.assignee ?? null };
       task.status = "todo";
       task.assignee = undefined;
       task.needs_human = undefined;
@@ -183,7 +210,10 @@ export class Store {
     });
   }
 
-  async blockTask(input: { id: string; blocked_by: string[] }): Promise<Result<Task, Err<"not_found">>> {
+  async blockTask(input: {
+    id: string;
+    blocked_by: string[];
+  }): Promise<Result<Task, Err<"not_found">>> {
     return this.mutex.run(async () => {
       const task = this.findById(input.id);
       if (!task) return { ok: false, code: "not_found" };
@@ -196,7 +226,10 @@ export class Store {
     });
   }
 
-  async unblockTask(input: { id: string; blocker_ids: string[] }): Promise<Result<Task, Err<"not_found">>> {
+  async unblockTask(input: {
+    id: string;
+    blocker_ids: string[];
+  }): Promise<Result<Task, Err<"not_found">>> {
     return this.mutex.run(async () => {
       const task = this.findById(input.id);
       if (!task) return { ok: false, code: "not_found" };
@@ -209,7 +242,10 @@ export class Store {
     });
   }
 
-  async requestHuman(input: { id: string; reason?: string }): Promise<Result<Task, Err<"not_found">>> {
+  async requestHuman(input: {
+    id: string;
+    reason?: string;
+  }): Promise<Result<Task, Err<"not_found">>> {
     return this.mutex.run(async () => {
       const task = this.findById(input.id);
       if (!task) return { ok: false, code: "not_found" };

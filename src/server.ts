@@ -10,7 +10,11 @@ export type ServerHandle = {
   close: () => Promise<void>;
 };
 
-export async function startServer(opts: { port: number; file: string; host?: string }): Promise<ServerHandle> {
+export async function startServer(opts: {
+  port: number;
+  file: string;
+  host?: string;
+}): Promise<ServerHandle> {
   const host = opts.host ?? "127.0.0.1";
   const store = await Store.load(opts.file);
   const mcp = buildMcpServer(store);
@@ -61,7 +65,9 @@ export async function startServer(opts: { port: number; file: string; host?: str
 
   async function handleMcp(req: IncomingMessage, res: ServerResponse): Promise<void> {
     const body = await readJson(req);
-    const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
+    const transport = new StreamableHTTPServerTransport({
+      sessionIdGenerator: undefined,
+    });
     res.on("close", () => {
       transport.close().catch(() => undefined);
     });
@@ -102,7 +108,12 @@ export async function startServer(opts: { port: number; file: string; host?: str
   };
 }
 
-function handleSse(req: IncomingMessage, res: ServerResponse, clients: Set<ServerResponse>, store: Store): void {
+function handleSse(
+  req: IncomingMessage,
+  res: ServerResponse,
+  clients: Set<ServerResponse>,
+  store: Store,
+): void {
   res.writeHead(200, {
     "Content-Type": "text/event-stream",
     "Cache-Control": "no-cache, no-transform",

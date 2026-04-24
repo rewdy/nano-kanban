@@ -55,7 +55,8 @@ export function buildMcpServer(store: Store): McpServer {
     "add_comment",
     {
       title: "Add Comment",
-      description: "Add a comment to a task. Works on any status (useful for reviewer comments on Done tasks).",
+      description:
+        "Add a comment to a task. Works on any status (useful for reviewer comments on Done tasks).",
       inputSchema: { id: z.string(), author: z.string(), body: z.string().min(1) },
     },
     async ({ id, author, body }) => {
@@ -81,7 +82,8 @@ export function buildMcpServer(store: Store): McpServer {
     "release_task",
     {
       title: "Release Task",
-      description: "Return a claimed task to Todo (e.g., cannot complete). Caller must be the assignee.",
+      description:
+        "Return a claimed task to Todo (e.g., cannot complete). Caller must be the assignee.",
       inputSchema: { id: z.string(), agent_id: z.string() },
     },
     async ({ id, agent_id }) => {
@@ -168,7 +170,9 @@ function err(code: string, extra: Record<string, unknown>): ToolResponse {
   };
 }
 
-function unwrap(result: Result<Task, { ok: false; code: string } & Record<string, unknown>>): ToolResponse {
+function unwrap(
+  result: Result<Task, { ok: false; code: string } & Record<string, unknown>>,
+): ToolResponse {
   if (result.ok) return ok({ task: result.task });
   const { ok: _ok, code, ...rest } = result;
   return err(code, rest);
