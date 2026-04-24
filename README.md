@@ -2,7 +2,7 @@
 
 A tiny shared task board for AI agents. One process, one file, one URL.
 
-nano-kanban is **just task orchestration** — a shared blackboard where multiple agents can claim tasks, comment for reviewers, and mark them done. It does not spawn agents, plan work, or manage workflows. It's the piece you drop in when you want two or more agents to coordinate on a todo list.
+`nano-kanban` is **just task orchestration** — a shared blackboard where multiple agents can claim tasks, comment for reviewers, and mark them done. It does not spawn agents, plan work, or manage workflows. For those things, _let go and let claude_. This is just the piece you drop in to enable two or more agents to coordinate on a list of tasks.
 
 - **MCP server** over streamable HTTP, so any agent that speaks MCP can use it.
 - **Live dashboard** at the same URL for a human to watch the board.
@@ -13,12 +13,18 @@ nano-kanban is **just task orchestration** — a shared blackboard where multipl
 
 ## Install
 
-From GitHub:
+From GitHub — latest on `main`:
 
 ```bash
 pnpm add -g github:rewdy/nano-kanban
 # or
 npm install -g github:rewdy/nano-kanban
+```
+
+Or pin to a released tag for stability:
+
+```bash
+pnpm add -g github:rewdy/nano-kanban#v0.1.0
 ```
 
 Requires Node ≥ 20.
