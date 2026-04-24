@@ -1,0 +1,32 @@
+{
+  "name": "nano-kanban",
+  "version": "0.1.0",
+  "description": "A nano kanban board for AI agent task coordination — MCP + live dashboard.",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "nano-kanban": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts serve",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js serve",
+    "typecheck": "tsc --noEmit"
+  },
+  "author": "Andrew Meyer",
+  "license": "ISC",
+  "packageManager": "pnpm@10.13.1",
+  "engines": {
+    "node": ">=18.17"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "nanoid": "^5.0.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.4.0"
+  }
+}
