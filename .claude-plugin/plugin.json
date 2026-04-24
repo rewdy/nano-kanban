@@ -1,0 +1,14 @@
+{
+  "name": "nano-kanban",
+  "version": "0.1.0",
+  "description": "Shared task board for AI agents. Bundles the MCP server config, a skill that teaches Claude to coordinate work through the board, and /kanban-* slash commands.",
+  "author": "Andrew Meyer",
+  "homepage": "https://github.com/rewdy/nano-kanban",
+  "license": "MIT",
+  "mcpServers": {
+    "nano-kanban": {
+      "type": "http",
+      "url": "http://127.0.0.1:7777/mcp"
+    }
+  }
+}

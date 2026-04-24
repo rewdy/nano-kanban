@@ -11,9 +11,39 @@ A tiny shared task board for AI agents. One process, one file, one URL.
 
 ![nano-kanban dashboard](./dashboard.png)
 
-## Install
+## Quick start with Claude Code (recommended)
 
-From GitHub — latest on `main`:
+Install the Claude Code plugin — it bundles the MCP config, a skill that teaches Claude how to drive the board, and `/kanban-*` slash commands:
+
+```
+/plugin install github:rewdy/nano-kanban
+```
+
+The first time you try to use it, Claude will check for the `nano-kanban` CLI and ask you to install it if it isn't on your PATH:
+
+```bash
+npm install -g github:rewdy/nano-kanban
+```
+
+(This is a global binary on your system, so the plugin asks rather than installing it silently.)
+
+Then just talk to Claude:
+
+- **"Set up a task board with these items: …"** — Claude starts the daemon, creates tasks, and points you at the dashboard.
+- **"Work through the tasks."** — Claude claims, works, comments, and completes tasks one at a time.
+- **"Shut down the board."** — Claude stops the daemon cleanly. `tasks.json` stays as a record.
+
+Or use the slash commands directly: `/kanban-setup`, `/kanban-status`, `/kanban-teardown`.
+
+Requires Node ≥ 20.
+
+---
+
+## Manual install (without the plugin)
+
+If you want to use nano-kanban without the Claude Code plugin — from another agent, from a script, or just to see the dashboard — install the CLI and start the daemon yourself.
+
+### Install the CLI
 
 ```bash
 pnpm add -g github:rewdy/nano-kanban
@@ -21,23 +51,23 @@ pnpm add -g github:rewdy/nano-kanban
 npm install -g github:rewdy/nano-kanban
 ```
 
-Or pin to a released tag for stability:
+Pin to a release tag:
 
 ```bash
 pnpm add -g github:rewdy/nano-kanban#v0.1.0
 ```
 
-Requires Node ≥ 20.
+Or run ad-hoc without installing:
 
-## Usage
+```bash
+npx github:rewdy/nano-kanban serve
+```
 
-Run inside the project directory where you want `tasks.json` to live:
+### Run the daemon
 
 ```bash
 nano-kanban serve
 ```
-
-You'll see:
 
 ```
 nano-kanban listening on http://127.0.0.1:7777
@@ -46,23 +76,32 @@ nano-kanban listening on http://127.0.0.1:7777
   State:     /path/to/project/tasks.json
 ```
 
-Open the dashboard in a browser to watch. Point your agent at the MCP URL.
+Options: `nano-kanban serve [--port 7777] [--file ./tasks.json]`.
 
-### Options
+### Wire it up manually
 
-```
-nano-kanban serve [--port 7777] [--file ./tasks.json]
-```
+nano-kanban is a **long-running HTTP daemon**, so you start it once per project and every MCP-speaking client points at the same URL. Don't use the stdio `"command"` / `"args"` config pattern — that would spawn a fresh daemon per session and lose the shared board.
 
-### Wiring into Claude Code
-
-Add the MCP server to your Claude Code config:
+With the Claude Code CLI:
 
 ```bash
 claude mcp add --transport http nano-kanban http://127.0.0.1:7777/mcp
 ```
 
-Then in a Claude Code session, the agent can call `list_tasks`, `claim_task`, etc. The agent should pass a stable `agent_id` string (e.g. `"claude-main"`) on claim/complete/release so the board knows who owns what.
+Or add this to `~/.claude.json` directly:
+
+```json
+{
+  "mcpServers": {
+    "nano-kanban": {
+      "type": "http",
+      "url": "http://127.0.0.1:7777/mcp"
+    }
+  }
+}
+```
+
+Agents should pass a stable `agent_id` string (e.g. `"claude-main"`) on claim/complete/release so the board knows who owns what.
 
 ## MCP tools
 
