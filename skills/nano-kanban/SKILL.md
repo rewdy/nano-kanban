@@ -85,7 +85,7 @@ When the user says "work through the tasks" or similar:
 6. If you cannot complete a task, `release_task({ id, agent_id })` returns it to Todo for someone else.
 7. Loop back to step 1.
 
-Pick a stable `agent_id` per session (e.g. `"claude-main"` or `"claude-<short-purpose>"`). Reuse it for claim/complete/release of the same task.
+Pick a stable `agent_id` per session (e.g. `"copilot-main"`, `"claude-main"`, or `"<tool>-<short-purpose>"`). Reuse it for claim/complete/release of the same task.
 
 ## Stopping the daemon
 

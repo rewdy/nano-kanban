@@ -37,6 +37,25 @@ Or use the slash commands directly: `/kanban-setup`, `/kanban-status`, `/kanban-
 
 Requires Node ≥ 20.
 
+## Quick start with VS Code Copilot
+
+This repo includes a native Copilot agent plugin at [`plugin.json`](./plugin.json). Install it in VS Code via the Command Palette:
+
+1. Run **Chat: Install Plugin From Source**
+2. Enter `https://github.com/rewdy/nano-kanban`
+
+Or add the marketplace to your settings and browse it from the Extensions view (`@agentPlugins`).
+
+Once installed, Copilot gains the `nano-kanban` skill and MCP tools. Talk to it the same way:
+
+- **"Set up a task board with these items: …"** — Copilot starts the daemon, creates tasks, and points you at the dashboard.
+- **"Work through the tasks."** — Copilot claims, works, comments, and completes tasks one at a time.
+- **"Shut down the board."** — Copilot stops the daemon cleanly. `tasks.json` stays as a record.
+
+The bundled skill is [`skills/nano-kanban/SKILL.md`](./skills/nano-kanban/SKILL.md), shared across all supported clients.
+
+Requires Node ≥ 20.
+
 ## Quick start with Codex
 
 This repo now includes a Codex plugin manifest at [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json) and a matching MCP config at [`.mcp.json`](./.mcp.json).
@@ -53,7 +72,7 @@ The bundled skill is still [`skills/nano-kanban/SKILL.md`](./skills/nano-kanban/
 
 ## Manual install (without the plugin)
 
-If you want to use nano-kanban without the Claude Code or Codex plugin — from another agent, from a script, or just to see the dashboard — install the CLI and start the daemon yourself.
+If you want to use nano-kanban without the Claude Code, VS Code Copilot, or Codex plugin — from another agent, from a script, or just to see the dashboard — install the CLI and start the daemon yourself.
 
 ### Install the CLI
 

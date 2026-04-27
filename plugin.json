@@ -1,0 +1,10 @@
+{
+  "name": "nano-kanban",
+  "description": "Shared task board for AI agents. Bundles the MCP server config, a skill that teaches Copilot to coordinate work through the board, and /kanban-* slash commands.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Andrew Meyer"
+  },
+  "skills": "skills/",
+  "mcpServers": ".mcp.json"
+}
