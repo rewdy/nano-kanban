@@ -80,6 +80,8 @@ const DASHBOARD_TEMPLATE = `<!doctype html>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
   header.site { padding: 14px 20px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); }
+  header.site .brand { display: inline-flex; align-items: center; gap: 8px; }
+  header.site .logo { width: 18px; height: 18px; display: block; flex: none; }
   header.site h1 { font-size: 15px; font-weight: 600; letter-spacing: 0.01em; margin: 0; }
   header.site .meta { font-size: 12px; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
   header.site .spacer { margin-left: auto; }
@@ -91,7 +93,11 @@ const DASHBOARD_TEMPLATE = `<!doctype html>
   .theme-switcher button + button { border-left: 1px solid var(--border); }
   .theme-switcher button[aria-pressed="true"] { background: var(--bg); color: var(--text); font-weight: 600; }
   .theme-switcher button:hover:not([aria-pressed="true"]) { color: var(--text); }
-  main { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; padding: 16px; }
+  main { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding: 16px; }
+  @media (max-width: 720px) {
+    main { grid-template-columns: minmax(0, 1fr); }
+    .column { min-height: 0; }
+  }
   .column { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; display: flex; flex-direction: column; min-height: 60vh; }
   .column header.col-header { border: none; padding: 12px 14px; display: flex; align-items: center; gap: 8px; }
   .col-header h2 { font-size: 13px; font-weight: 600; margin: 0; text-transform: uppercase; letter-spacing: 0.06em; }
@@ -123,7 +129,16 @@ const DASHBOARD_TEMPLATE = `<!doctype html>
 </head>
 <body>
 <header class="site">
-  <h1>nano-kanban</h1>
+  <span class="brand">
+    <svg class="logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <g fill="none" stroke="#f59e0b" stroke-width="2" stroke-linejoin="round">
+        <rect x="2" y="3" width="5.333" height="18" rx="1" />
+        <rect x="9.333" y="3" width="5.333" height="18" rx="1" />
+        <rect x="16.667" y="3" width="5.333" height="18" rx="1" />
+      </g>
+    </svg>
+    <h1>nano-kanban</h1>
+  </span>
   <span class="meta" id="source">__STATE_PATH__</span>
   <span class="spacer"></span>
   <div class="theme-switcher" role="group" aria-label="Theme">

@@ -1,4 +1,6 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
+import { existsSync } from "node:fs";
+import { basename, dirname, parse as parsePath, relative } from "node:path";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { Store, type Board } from "./store.js";
 import { buildMcpServer } from "./mcp.js";
@@ -18,7 +20,7 @@ export async function startServer(opts: {
   const host = opts.host ?? "127.0.0.1";
   const store = await Store.load(opts.file);
   const mcp = buildMcpServer(store);
-  const dashboardHtml = renderDashboard({ statePath: opts.file });
+  const dashboardHtml = renderDashboard({ statePath: displayPath(opts.file) });
   const allowedHostnames = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
 
   const sseClients = new Set<ServerResponse>();
@@ -154,6 +156,23 @@ function isLocalRequest(req: IncomingMessage, allowed: Set<string>): boolean {
     }
   }
   return true;
+}
+
+function displayPath(filePath: string): string {
+  const repoRoot = findRepoRoot(dirname(filePath));
+  if (!repoRoot) return filePath;
+  const rel = relative(repoRoot, filePath);
+  return `${basename(repoRoot)}/${rel}`;
+}
+
+function findRepoRoot(startDir: string): string | null {
+  const { root } = parsePath(startDir);
+  let dir = startDir;
+  while (true) {
+    if (existsSync(`${dir}/.git`)) return dir;
+    if (dir === root) return null;
+    dir = dirname(dir);
+  }
 }
 
 async function readJson(req: IncomingMessage): Promise<unknown> {
